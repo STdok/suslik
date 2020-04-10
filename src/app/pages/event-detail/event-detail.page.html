@@ -1,0 +1,121 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>
+      {{ 'eventlist.detail.title' | translate }}
+    </ion-title>
+
+    <ion-buttons slot="primary">
+      <ion-button color="light" *ngIf="mode === 'detail'" (click)="mode = 'edit'">
+        <ion-icon slot="start" name="create"></ion-icon>
+        Edit
+      </ion-button>
+      <ion-button color="light" *ngIf="mode === 'edit'" (click)="mode = 'detail'">
+        <ion-icon slot="start" name="close-circle-outline"></ion-icon>
+        Cancel edit
+      </ion-button>
+      <ion-button color="light" (click)="deleteEvent()">
+        <ion-icon slot="start" name="trash"></ion-icon>
+        Delete
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card color="primary" class="ion-no-margin" *ngIf="mode === 'detail'">
+    <ion-card-header color="dark" class="ion-margin-bottom">
+      <ion-card-title>
+        {{ event?.eventName }}
+      </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p>
+        <ion-text color="light">{{ event?.eventDescription }}</ion-text>
+      </p>
+
+      <ion-item color="secondary" class="ion-margin-top">
+        <ion-icon name="pin" class="vaicon" slot="start"></ion-icon> 
+        {{ event?.eventLocation }}
+      </ion-item>
+      <ion-item color="secondary">
+        <ion-icon name="calendar" class="vaicon" slot="start"></ion-icon> 
+        {{ event?.eventDate | date: 'dd/MM/yyyy' }}
+      </ion-item>       
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card color="dark" class="ion-no-margin" *ngIf="mode === 'edit'">
+    <ion-card-content>
+
+      <form [formGroup]="editEventForm" class="list-form">
+        <ion-item lines="none" class="ion-no-padding animated fadeInUp">
+          <ion-label color="tertiary" position="floating">
+            <ion-icon name="list" slot="start"></ion-icon>
+            {{ 'eventlist.detail.eventname.title' | translate }}
+          </ion-label>
+          <ion-input color="light" type="text" formControlName="eventName"></ion-input>
+        </ion-item>
+        <p class="text08 msg" *ngIf="f.eventName.errors && hasError">
+          <ion-text color="danger" *ngIf="f.eventName.errors.required">
+            {{ 'form.error.required' | translate }}
+          </ion-text>
+        </p>
+
+        <ion-item lines="none" class="ion-no-padding animated fadeInUp">
+          <ion-label color="tertiary" position="floating">
+            <ion-icon name="list" slot="start"></ion-icon>
+            {{ 'eventlist.detail.eventdesc.title' | translate }}
+          </ion-label>
+          <ion-textarea color="light" formControlName="eventDescription"></ion-textarea>
+        </ion-item>
+        <p class="text08 msg" *ngIf="f.eventDescription.errors && hasError">
+          <ion-text color="danger" *ngIf="f.eventDescription.errors.required">
+            {{ 'form.error.required' | translate }}
+          </ion-text>
+        </p>
+
+        <ion-item lines="none" class="ion-no-padding animated fadeInUp">
+          <ion-label color="tertiary" position="floating">
+            <ion-icon name="list" slot="start"></ion-icon>
+            {{ 'eventlist.detail.eventlocation.title' | translate }}
+          </ion-label>
+          <ion-input color="light" type="text" formControlName="eventLocation"></ion-input>
+        </ion-item>
+        <p class="text08 msg" *ngIf="f.eventLocation.errors && hasError">
+          <ion-text color="danger" *ngIf="f.eventLocation.errors.required">
+            {{ 'form.error.required' | translate }}
+          </ion-text>
+        </p>
+
+        <ion-item lines="none" class="ion-no-padding animated fadeInUp">
+          <ion-label color="tertiary" position="floating">
+            <ion-icon name="calendar" slot="start"></ion-icon>
+            {{ 'eventlist.detail.eventdate.title' | translate }}
+          </ion-label>
+
+          <ion-datetime color="light" displayFormat="DDDD MMM DD, YYYY"  min="2018" max="2020-10-31" formControlName="eventDate" placeholder="When will happen?"></ion-datetime>
+        </ion-item>
+        <p class="text08 msg" *ngIf="f.eventDate.errors && hasError">
+          <ion-text color="danger" *ngIf="f.eventDate.errors.required">
+            {{ 'form.error.required' | translate }}
+          </ion-text>
+        </p>
+
+        <div class="ion-margin-top">
+          <ion-button size="large" expand="full" color="primary" (click)="editEvent()">
+            <!-- [disabled]="isOffline" -->
+            <ion-icon name="create" slot="start"></ion-icon>
+            {{ 'eventlist.detail.buttom.edit' | translate }}
+          </ion-button>
+        </div>
+      </form>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

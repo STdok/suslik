@@ -1,0 +1,119 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>
+      {{ 'songlist.detail.title' | translate }}
+    </ion-title>
+
+    <ion-buttons slot="primary">
+      <ion-button color="light" *ngIf="mode === 'detail'" (click)="mode = 'edit'">
+        <ion-icon slot="start" name="create"></ion-icon>
+        Edit
+      </ion-button>
+      <ion-button color="light" *ngIf="mode === 'edit'" (click)="mode = 'detail'">
+        <ion-icon slot="start" name="close-circle-outline"></ion-icon>
+        Cancel edit
+      </ion-button>
+      <ion-button color="light" (click)="deleteSong()">
+        <ion-icon slot="start" name="trash"></ion-icon>
+        Delete
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card color="primary" class="ion-no-margin" *ngIf="mode === 'detail'">
+    <ion-card-header color="dark" class="ion-margin-bottom">
+      <ion-card-title>
+        {{ song?.songName }}
+      </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p>
+        <ion-text color="light">{{ song?.songDescription }}</ion-text>
+      </p>
+
+      <ion-item color="secondary" class="ion-margin-top">
+        <ion-icon name="person" class="vaicon" slot="start"></ion-icon> 
+        {{ song?.artistName }}
+      </ion-item>
+      <ion-item color="secondary">
+        <ion-icon name="albums" class="vaicon" slot="start"></ion-icon> 
+        {{ song?.albumName }}
+      </ion-item>       
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card color="dark" class="ion-no-margin" *ngIf="mode === 'edit'">
+    <ion-card-content>
+      <form [formGroup]="editSongForm" class="list-form">
+        <ion-item lines="none" class="ion-no-padding animated fadeInUp">
+          <ion-label color="tertiary" position="floating">
+            <ion-icon name="list" slot="start"></ion-icon>
+            {{ 'songlist.detail.songname.title' | translate }}
+          </ion-label>
+          <ion-input color="light" type="text" formControlName="songName"></ion-input>
+        </ion-item>
+        <p class="text08 msg" *ngIf="f.songName.errors && hasError">
+          <ion-text color="danger" *ngIf="f.songName.errors.required">
+            {{ 'form.error.required' | translate }}
+          </ion-text>
+        </p>
+
+        <ion-item lines="none" class="ion-no-padding animated fadeInUp">
+          <ion-label color="tertiary" position="floating">
+            <ion-icon name="list" slot="start"></ion-icon>
+            {{ 'songlist.detail.artistname.title' | translate }}
+          </ion-label>
+          <ion-input color="light" type="text" formControlName="artistName"></ion-input>
+        </ion-item>
+        <p class="text08 msg" *ngIf="f.artistName.errors && hasError">
+          <ion-text color="danger" *ngIf="f.artistName.errors.required">
+            {{ 'form.error.required' | translate }}
+          </ion-text>
+        </p>
+
+        <ion-item lines="none" class="ion-no-padding animated fadeInUp">
+          <ion-label color="tertiary" position="floating">
+            <ion-icon name="list" slot="start"></ion-icon>
+            {{ 'songlist.detail.albumname.title' | translate }}
+          </ion-label>
+          <ion-input color="light" type="text" formControlName="albumName"></ion-input>
+        </ion-item>
+        <p class="text08 msg" *ngIf="f.albumName.errors && hasError">
+          <ion-text color="danger" *ngIf="f.albumName.errors.required">
+            {{ 'form.error.required' | translate }}
+          </ion-text>
+        </p>
+
+        <ion-item lines="none" class="ion-no-padding animated fadeInUp">
+          <ion-label color="tertiary" position="floating">
+            <ion-icon name="list" slot="start"></ion-icon>
+            {{ 'songlist.detail.songdesc.title' | translate }}
+          </ion-label>
+          <ion-textarea color="light" formControlName="songDescription"></ion-textarea>
+        </ion-item>
+        <p class="text08 msg" *ngIf="f.songDescription.errors && hasError">
+          <ion-text color="danger" *ngIf="f.songDescription.errors.required">
+            {{ 'form.error.required' | translate }}
+          </ion-text>
+        </p>
+
+        <div class="ion-margin-top">
+          <ion-button size="large" expand="full" color="primary" (click)="editSong()">
+            <!-- [disabled]="isOffline" -->
+            <ion-icon name="musical-note" slot="start"></ion-icon>
+            {{ 'songlist.detail.buttom.edit' | translate }}
+          </ion-button>
+        </div>
+      </form>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

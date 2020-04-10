@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button routerLink="/crud">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>{{ 'songlist.title' | translate }}</ion-title>
+
+    <ion-buttons slot="primary">
+      <ion-button color="light" routerLink="/song-create">
+        <ion-icon slot="start" name="add-circle"></ion-icon>
+        {{ 'songlist.detail.buttom.add' | translate }}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card color="secondary" *ngIf="(songList | async)?.length === 0">
+    <ion-card-header color="dark" class="ion-margin-bottom">
+      <ion-card-title>
+        <ion-text color="light">{{ 'songlist.msg.notavailable' | translate }}</ion-text>
+      </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p>Create one clicking on above plus icon.</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card color="primary" *ngFor="let song of songList | async" tappable routerLink="/song-detail/{{song.id}}">
+    <ion-card-header>
+      <ion-card-title>
+          <ion-icon name="musical-note" color="light" class="vaicon"></ion-icon> 
+          <ion-text color="light">{{ song.songName }}</ion-text>
+      </ion-card-title>
+      <ion-card-subtitle>
+        <ion-text color="tertiary">{{ song.artistName }} / {{ song.albumName }}</ion-text>
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>  
+</ion-content>
